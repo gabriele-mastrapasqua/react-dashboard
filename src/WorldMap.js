@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import './App.css'
-import worlddata from './world'
+//import worlddata from './world'
 //import worlddata from './map'
+import worlddata from './europe'
 import { geoMercator, geoPath } from 'd3-geo'
 
 
 class WorldMap extends Component {
-      constructor(props){
-            super(props)
-            
-      }
+   constructor(props){
+      super(props)
+   }
       
    render() {
       const projection = geoMercator()
