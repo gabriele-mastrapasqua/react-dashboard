@@ -18,5 +18,23 @@ yarn run import
 
 This will load on mongodb and create a geospatial index to speedup queries.
 
+```
 db.events.createIndex({ location: "2dsphere" })
 db.map.createIndex({ geometry: "2dsphere" })
+``` 
+
+geospatial queries examples:
+see https://docs.mongodb.com/manual/tutorial/geospatial-tutorial/
+
+
+- for example to find where a specific coordinates is:
+```
+db.maps.findOne({ geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.93414657, 40.82302903 ] } } } })
+```
+will prints the NY zone Neighborhood.
+
+- to find all mobile devices in a specific zone:
+```
+var neighborhood = db.maps.findOne( { geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.93414657, 40.82302903 ] } } } } )
+db.events.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } } ).count()
+```
