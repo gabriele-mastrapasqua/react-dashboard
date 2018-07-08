@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "import-csv": "node src/scripts/import-data.js",
+    "import-csv": "node src/scripts/import-csv.js",
     "import-map": "node src/scripts/import-map.js"
   },
   "dependencies": {
