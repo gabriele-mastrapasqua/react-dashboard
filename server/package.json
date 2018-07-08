@@ -1,0 +1,18 @@
+{
+  "name": "web_app",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "Gabriele Mastrapasqua <gabriele.mastrapasqua@gmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "import-csv": "node src/scripts/import-data.js",
+    "import-map": "node src/scripts/import-map.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "fast-csv": "^2.4.1",
+    "mongoose": "5.2.1",
+    "mongoose-geojson-schema": "^2.1.2"
+  }
+}

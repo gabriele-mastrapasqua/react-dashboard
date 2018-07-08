@@ -1,6 +1,6 @@
 # Analytics dashboard
 
-Single page application and REST API that shows the advertisement views (in the advertisement slang, they are called "impressions") coming from mobile devices and that answers the following questions:
+A Single page application and a REST API server that shows the advertisement views coming from mobile devices and that answers the following questions:
 
 * How many impressions are coming from each device?
 * How many impressions for each hour of the day?
@@ -14,18 +14,27 @@ nice to have:
 * Using docker
 
 
-## install 
+
+## build the images for running client and rest server
 
 ```
-npm install -g create-react-app
-create-react-app d3ia
-cd d3ia/
-npm start
+sudo docker-compose build
 ```
 
-## dependencies
+## run
 
 ```
-npm i -SE highcharts react-highcharts
+docker-compose up -d
+```
+
+The client will listen on port 3000
+
+(The webapi server will listen on port 8080)
+
+
+## stop
+
+```
+docker-compose down
 ```
 
