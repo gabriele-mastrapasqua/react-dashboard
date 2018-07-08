@@ -25,7 +25,7 @@ function loadMobileData() {
             data['_id'] = new mongoose.Types.ObjectId();
             data['location'] = {
                 type: "Point", 
-                coordinates: [data["lng"], data["lat"]]   // takes longitude, latitude coordinates
+                coordinates: [parseFloat(data["lng"]), parseFloat(data["lat"])]   // takes longitude, latitude coordinates
             };
             console.log("got data ", data);
             Event.create([data], function (err, documents) {
