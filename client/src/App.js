@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios'
+
+
 /*import './BarChart';
 import BarChart from './BarChart';
 import WorldMap from './WorldMap';
 */
-//const ReactHighcharts = require('react-highcharts'); // Expects that Highcharts was loaded in the code.
+import config from './config.js';
+
+
+import EnhancedTable from './EnhancedTable';
+
+
 const ReactHighmaps = require('react-highcharts/ReactHighmaps');
-//import maps from './europe';
 import maps from './map';
 
 const mapconfig = {
@@ -81,45 +88,41 @@ class App extends Component {
       super(props);
 
       this.state = {
-        coords: [1,10,1,3]
+        totalImpressions: 0,
+        impressionPerDevices: [],
+        impression24Hours: [],
+        impressionDayOfWeek: [],
+        impressionDayOfMonth: [],
+        impressionEachCountry: [],
+        
       };
       
-      // This binding is necessary to make `this` work in the callback
-      this.changeValues = this.changeValues.bind(this);
   }
 
-  changeValues(e) {
-    console.log("click");
-
-    // mutate state with setState()
-    this.setState(prevState => ({
-      coords: [
-          parseInt(Math.random() * 10) + 1, 
-          parseInt(Math.random() * 10) + 1, 
-          parseInt(Math.random() * 10) + 1, 
-          parseInt(Math.random() * 10) + 1
-        ]
-    }));
-
-
+  componentDidMount() {
+    axios.get(config.API_URL + 'getImpressions')
+    .then(response => {
+      console.log(response)
+      this.setState({totalImpressions: response.data.impressions, impressionPerDevices: response.data.impressionPerDevices})
+    })
   }
+
   render() {
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to myapp</h2>
+          <h2>Welcome to Analityics Dashboard</h2>
         </div>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
 
+        <b>Total impressions:</b> {this.state.totalImpressions}
 
-          <br/>
+        <EnhancedTable data={this.state.impressionPerDevices}  />
 
-        <button onClick={this.changeValues}>update values</button>
-        <br/>
-
-      highcharts:
+      <br/>
+     
+      Impressions for each country:
 
       <ReactHighmaps config={mapconfig}/>
 
