@@ -8,12 +8,12 @@ services:
     #ports:
       #- 3000:3000
   
-  api:
-    build: server/.
-    ports:
-      - 8080:8080
-    depends_on:
-      - mongo
+  #api:
+  #  build: server/.
+  #  ports:
+  #    - 8080:8080
+  #  depends_on:
+  #    - mongo
       
   mongo:
     image: mongo
