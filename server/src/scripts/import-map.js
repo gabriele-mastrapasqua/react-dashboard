@@ -3,7 +3,7 @@ var Map = require('../models/Map');
 var config = require('../config.js');
 
 const MAP_FILENAME = "./map.json";
-//const MAP_FILENAME = "./state.geo.json";
+//const MAP_FILENAME = "./map-conv.json";
 
 mongoose.connect(`mongodb://${MONGO_HOST}:${MONGO_PORT}/analytics`, { useNewUrlParser: true });
 
@@ -23,5 +23,5 @@ function loadMapData() {
             if (err) throw err;
         })
     }
-
+	console.log("finished importing map data ");
 }

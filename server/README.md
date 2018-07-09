@@ -4,16 +4,17 @@ Building the docker image is made with docker-compose.
 
 The local dockefile describe how to build the nodejs server
 
-## dependencies
+## setup
 
 ```
-yarn add mongooes fast-csv
+yarn install
 ```
 
-## import csv data to mongodb and load map data
+## import csv events data and load map data that describe the neighborhood of united states in mongodb
 
 ```
-yarn run import
+yarn run import-csv
+yarn run import-map
 ```
 
 This will load on mongodb and create a geospatial index to speedup queries.
@@ -27,7 +28,7 @@ geospatial queries examples:
 see https://docs.mongodb.com/manual/tutorial/geospatial-tutorial/
 
 
-- for example to find where a specific coordinates is:
+- for example to find where a specific coordinates is in a state:
 ```
 db.maps.findOne({ geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.93414657, 40.82302903 ] } } } })
 ```
