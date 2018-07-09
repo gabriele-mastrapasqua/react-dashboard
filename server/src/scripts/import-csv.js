@@ -1,7 +1,8 @@
 var csv = require('fast-csv');
 var mongoose = require('mongoose');
 var Event = require('../models/Event');
-var config = require('../config.js');
+require('../config.js');
+
 
 const DATA_FILENAME = "src/scripts/dataset.csv";
 

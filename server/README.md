@@ -10,6 +10,13 @@ The local dockefile describe how to build the nodejs server
 yarn install
 ```
 
+## develop
+
+```
+yarn run dev
+```
+
+
 ## import csv events data and load map data that describe the neighborhood of united states in mongodb
 
 ```
@@ -21,7 +28,7 @@ This will load on mongodb and create a geospatial index to speedup queries.
 
 ```
 db.events.createIndex({ location: "2dsphere" })
-db.map.createIndex({ geometry: "2dsphere" })
+db.maps.createIndex({ geometry: "2dsphere" })
 ``` 
 
 geospatial queries examples:
@@ -39,3 +46,11 @@ will prints the NY zone Neighborhood.
 var neighborhood = db.maps.findOne( { geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.93414657, 40.82302903 ] } } } } )
 db.events.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } } ).count()
 ```
+
+
+## TODO
+
+- add test with jest
+- add mongodump and mongoimport to speedup import when starting up docker
+- add docker for frontend
+- add jest for frontend

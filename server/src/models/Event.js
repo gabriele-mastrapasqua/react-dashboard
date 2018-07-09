@@ -13,6 +13,7 @@ var eventSchema = mongoose.Schema({
     timestamp: Date
 });
  
+eventSchema.path("location").index({ type: '2dsphere'});  // ensure geospatial index
 var Event = mongoose.model('Event', eventSchema);
  
 module.exports = Event;

@@ -14,7 +14,8 @@ var mapSchema = mongoose.Schema({
     geometry: mongoose.Schema.Types.Geometry,
 
 });
- 
+
+mapSchema.path("geometry").index({ type: '2dsphere'});  // ensure geospatial index
 var Map = mongoose.model('Map', mapSchema);
  
 module.exports = Map;

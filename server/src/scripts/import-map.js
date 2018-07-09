@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Map = require('../models/Map');
-var config = require('../config.js');
+require('../config.js');
 
 const MAP_FILENAME = "./map.json";
 //const MAP_FILENAME = "./map-conv.json";
@@ -23,5 +23,5 @@ function loadMapData() {
             if (err) throw err;
         })
     }
-	console.log("finished importing map data ");
+    console.log("finished importing map data ");
 }
