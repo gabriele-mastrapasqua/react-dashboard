@@ -20,6 +20,7 @@ const app = express();
 app.use(cors())
 
 
+// get total impressions on db
 app.get('/getTotalImpressions', (req, res) => {
     // total impressions on db
     Event.count({}, function (err, totalImpressions) {
@@ -27,9 +28,8 @@ app.get('/getTotalImpressions', (req, res) => {
     });
 });
 
+// get impressions groupde by devices
 app.get('/getImpressions', (req, res) => {
-    // total impressions on db
-    // group by devices and count impressions
     Event.aggregate(
         [
             { $group: { _id: "$device_id", count: { $sum: 1 } } },
@@ -42,6 +42,52 @@ app.get('/getImpressions', (req, res) => {
             res.send({ impressionPerDevices: impressionPerDevices });
         });
 });
+
+// get impressions in the last 24h from the passed date
+app.get('/getImpressions24Hours/:date', (req, res) => {
+    console.log("get 24 hours date - 1 day ", req.params.date)
+    var impressionsHours = Array(24).fill(0); // init array of 0 values
+
+    // total impressions on db
+    Event.aggregate([
+        /* filter: where */
+        {$match: {timestamp: {
+            $lt: new Date(req.params.date) , 
+            $gte: new Date(new Date(req.params.date).setDate(new Date(req.params.date).getDate()-1))
+            }} 
+        },
+        /* join: raggruppa i campi separando in più componenti giorni,ore,min.
+        usa i per contare */
+        {$project:         
+               {
+              "y":{"$year":"$timestamp"},
+              "m":{"$month":"$timestamp"},
+              "d":{"$dayOfMonth":"$timestamp"},
+              "h":{"$hour":"$timestamp"},
+              "i": {"$sum": 1} }
+            },
+        /* raggruppa come id per anno+mese+giorno+ora e somma le occorrenze */
+        { "$group":
+            { 
+            "_id": { "year":"$y","month":"$m","day":"$d","hour":"$h"},
+            "total":{ "$sum": "$i"}
+            }
+        },
+        /* ordina x ore */
+        {$sort: {_id: 1}}
+    
+    ], function (err, docs) {
+        // fill hours array with 
+        for(var i=0; i<docs.length; i++) {
+            console.log("impression in h ", docs[i]._id.hour, docs[i].total)
+            // if in the db there are impressions for this hour
+            impressionsHours[ docs[i]._id.hour ] = docs[i].total;
+        }
+        res.send({ impressions: impressionsHours, docs: docs });        
+    });
+
+});
+
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
