@@ -20,21 +20,27 @@ const app = express();
 app.use(cors())
 
 
+app.get('/getTotalImpressions', (req, res) => {
+    // total impressions on db
+    Event.count({}, function (err, totalImpressions) {
+        res.send({ impressions: totalImpressions });
+    });
+});
+
 app.get('/getImpressions', (req, res) => {
     // total impressions on db
-    Event.count({}, function(err, totalImpressions) {
-        // group by devices and count impressions
-        Event.aggregate(
-            [
-                {$group: {_id: "$device_id", count: {$sum: 1}  } } 
-            ],function(err,result) {
-                var impressionPerDevices = {};
-                if(result && result.length > 0){
-                    impressionPerDevices = result;
-                }
-                res.send({impressions: totalImpressions, impressionPerDevices: impressionPerDevices});
+    // group by devices and count impressions
+    Event.aggregate(
+        [
+            { $group: { _id: "$device_id", count: { $sum: 1 } } },
+            { $limit: 10 }
+        ], function (err, result) {
+            var impressionPerDevices = {};
+            if (result && result.length > 0) {
+                impressionPerDevices = result;
+            }
+            res.send({ impressionPerDevices: impressionPerDevices });
         });
-    });
 });
 
 app.listen(PORT, HOST);
