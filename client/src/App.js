@@ -6,73 +6,7 @@ import config from './config.js';
 
 // ui components
 import DevicesImpressionsTable from './DevicesImpressionsTable';
-
-const ReactHighmaps = require('react-highcharts/ReactHighmaps');
-import maps from './map';
-
-const mapconfig = {
-  chart: {
-    spacingBottom: 20
-  },
-  title: {
-    text: 'Impressions per zones'
-  },
-
-  legend: {
-    enabled: true
-  },
-
-  plotOptions: {
-    map: {
-      allAreas: true,                 // show all regions, also the zones with null values
-      nullColor: 'rgba(0,0,0,0)',     // to render correctly use transparent color for the null zones
-      joinBy: ['level1', 'code'],     // map values from 'map.json' property with 'code' to render data series
-      dataLabels: {
-        enabled: true,
-        color: 'white',
-        formatter: function () {
-          return this.point.properties['level1'];
-        },
-        format: null,
-        style: {
-          fontWeight: 'bold'
-        }
-      },
-      mapData: maps,
-      tooltip: {
-        headerFormat: '',
-        pointFormat: '{point.name}: <b>{series.name}</b>, Impressions count: {point.count}'   // using point to get data from series
-      }
-
-    }
-  },
-
-  // todo -> map with states from the server: 
-  // do an axios req that map a json with state and count of impressions
-  series: [
-
-    {
-      name: 'Alaska',
-      data: ['Alaska'].map(function (code) {
-        return { code: code, count: 100 };
-      })
-    },
-    {
-      name: 'Alabama',
-      data: ['Alabama'].map(function (code) {
-        return { code: code, count: 22 };
-      })
-    },
-    {
-      name: 'Arizona',
-      data: ['Arizona'].map(function (code) {
-        return { code: code, count: 1100 };
-      })
-    },
-
-  ]
-};
-
+import MapChart from './MapChart';
 
 
 
@@ -81,31 +15,57 @@ class App extends Component {
     super(props);
 
     this.state = {
+      option: 0,
       totalImpressions: 0,
       impressionPerDevices: [],
       impression24Hours: [],
       impressionDayOfWeek: [],
       impressionDayOfMonth: [],
       impressionEachCountry: [],
-
     };
+  }
 
+  changeOption = (opt) => {
+    console.log("changeOpt ", opt);
+    this.setState({ option: opt });
   }
 
   componentDidMount() {
-    axios.get(config.API_URL + 'getImpressions')
+    axios.get(config.API_URL + 'getTotalImpressions')
       .then(response => {
         console.log(response)
-        this.setState({ totalImpressions: response.data.impressions, impressionPerDevices: response.data.impressionPerDevices })
+        this.setState({ totalImpressions: response.data.impressions })
       })
+  }
+
+  renderSelectedOption() {
+    if (this.state.option === 0) {
+      return (
+        <DevicesImpressionsTable />
+      );
+    } else if (this.state.option === 1) {
+      return (
+        <b>1</b>
+      );
+    } else if (this.state.option === 2) {
+      return (
+        <DevicesImpressionsTable />
+      );
+    } else if (this.state.option === 3) {
+      return (
+        <DevicesImpressionsTable />
+      );
+    }
   }
 
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <h2>Analityics Dashboard</h2>
-        </div>
+        <nav className="navbar navbar-light bg-light">
+          <a className="navbar-brand" href="#">
+            Analytics dashboard
+        </a>
+        </nav>
         <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -114,31 +74,37 @@ class App extends Component {
           </div>
           <div className="row">
             <div className="col-md-12">
-              <div className="btn-group" role="group" aria-label="Basic example">
-                <button type="button" className="btn btn-secondary">Last 24 hours</button>
-                <button type="button" className="btn btn-secondary">Last week</button>
-                <button type="button" className="btn btn-secondary">Last Month</button>
+              Impressions:
+          </div>
+            <div className="col-md-12">
+              <div className="btn-group" role="group" aria-label="Impressions">
+                <button type="button" onClick={this.changeOption.bind(this, 0)} className="btn btn-secondary">Total impressions</button>
+                <button type="button" onClick={this.changeOption.bind(this, 1)} className="btn btn-secondary">Last 24 hours</button>
+                <button type="button" onClick={this.changeOption.bind(this, 2)} className="btn btn-secondary">Last week</button>
+                <button type="button" onClick={this.changeOption.bind(this, 3)} className="btn btn-secondary">Last Month</button>
               </div>
             </div>
           </div>
 
         </div>
 
-
-
-        <DevicesImpressionsTable data={this.state.impressionPerDevices} />
-
+        <div className="row">
+          <div className="col-md-12">
+            {this.renderSelectedOption()}
+          </div>
+      </div>
+    
+    
         <br />
 
-        Impressions for each country:
+          Impressions for each country:
+  
+      <MapChart data={this.state.impressionEachCountry} />
 
-      <ReactHighmaps config={mapconfig} />
 
-
-
-      </div>
-    );
-  }
-}
-
-export default App;
+        </div>
+        );
+      }
+    }
+    
+    export default App;
