@@ -7,6 +7,7 @@ import config from './config.js';
 // ui components
 import DevicesImpressionsTable from './DevicesImpressionsTable';
 import MapChart from './MapChart';
+import BarChart from './BarChart';
 
 
 
@@ -45,7 +46,7 @@ class App extends Component {
       );
     } else if (this.state.option === 1) {
       return (
-        <b>1</b>
+        <BarChart />
       );
     } else if (this.state.option === 2) {
       return (
