@@ -1,13 +1,27 @@
 import React from 'react';
+import axios from 'axios'
+import config from './config.js';
 
 class DeviceImpressionsTable extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      impressionPerDevices: []
+    };
+  }
+
+  componentDidMount () {
+    console.log("call getImpressions ");
+    axios.get(config.API_URL + 'getImpressions')
+      .then(response => {
+        console.log(response)
+        this.setState({ impressionPerDevices: response.data.impressionPerDevices })
+      })
   }
 
   render() {
     return (
-      <table class="table">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">Device id</th>
@@ -15,7 +29,7 @@ class DeviceImpressionsTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.data
+          {this.state.impressionPerDevices
             .map(n => {
               return (
                 <tr>
