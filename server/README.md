@@ -17,6 +17,17 @@ yarn run dev
 ```
 
 
+## backup from mongo
+
+note: using mounted volume from container /backup on local host
+
+docker-compose exec mongo mongodump -d analytics --out /backup
+
+## import a dump to mongo
+
+docker-compose exec mongo mongorestore /backup
+
+
 ## import csv events data and load map data that describe the neighborhood of united states in mongodb
 
 ```
