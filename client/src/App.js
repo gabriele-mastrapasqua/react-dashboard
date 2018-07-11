@@ -9,8 +9,6 @@ import DevicesImpressionsTable from './DevicesImpressionsTable';
 import MapChart from './MapChart';
 import BarChart from './BarChart';
 
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -37,19 +35,19 @@ class App extends Component {
   renderSelectedOption() {
     if (this.state.option === 0) {
       return (
-        <DevicesImpressionsTable />
+        <DevicesImpressionsTable totalImpressions={this.state.totalImpressions} />
       );
     } else if (this.state.option === 1) {
       return (
-        <BarChart type="h"/>
+        <BarChart type="h" />
       );
     } else if (this.state.option === 2) {
       return (
-        <BarChart type="w"/>
+        <BarChart type="w" />
       );
     } else if (this.state.option === 3) {
       return (
-        <BarChart type="m"/>
+        <BarChart type="m" />
       );
     }
   }
@@ -68,39 +66,53 @@ class App extends Component {
               <b>Total impressions:</b> {this.state.totalImpressions}
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-12">
-              Impressions:
-          </div>
-            <div className="col-md-12">
-              <div className="btn-group" role="group" aria-label="Impressions">
-                <button type="button" onClick={this.changeOption.bind(this, 0)} className="btn btn-secondary">Total impressions</button>
-                <button type="button" onClick={this.changeOption.bind(this, 1)} className="btn btn-secondary">Last 24 hours</button>
-                <button type="button" onClick={this.changeOption.bind(this, 2)} className="btn btn-secondary">Last week</button>
-                <button type="button" onClick={this.changeOption.bind(this, 3)} className="btn btn-secondary">Last Month</button>
+
+          <div class="card">
+            <div class="card-body">
+              <div className="row">
+                <div className="col-md-6 mb-3">
+                  <div className="btn-group" role="group" aria-label="Impressions">
+                    <button type="button" onClick={this.changeOption.bind(this, 0)} className={'btn btn-secondary'+(this.state.option == 0 ? 'active': '') } >Total impressions</button>
+                    <button type="button" onClick={this.changeOption.bind(this, 1)} className={'btn btn-secondary'+(this.state.option == 1 ? 'active': '') }>Last 24 hours</button>
+                    <button type="button" onClick={this.changeOption.bind(this, 2)} className={'btn btn-secondary'+(this.state.option == 2 ? 'active': '') }>Last week</button>
+                    <button type="button" onClick={this.changeOption.bind(this, 3)} className={'btn btn-secondary'+(this.state.option == 3 ? 'active': '') }>Last Month</button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+
+              <div className="row">
+                <div className="col-md-6">
+                  <div class="card">
+                    <div class="card-body" style={{ height: '600px' }} >
+                      {this.renderSelectedOption()}
+                    </div>
+                  </div>
+
+                </div>
+                <div className="col-md-6">
+                  <div class="card">
+                    <div class="card-body" style={{ height: '600px' }} >
+                      <MapChart data={this.state.impressionEachCountry} />
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div></div>
+
+
 
         </div>
 
-        <div className="row">
-          <div className="col-md-12">
-            {this.renderSelectedOption()}
-          </div>
+
+
+
+
       </div>
-    
-    
-        <br />
+    );
+  }
+}
 
-          Impressions for each country:
-  
-      <MapChart data={this.state.impressionEachCountry} />
-
-
-        </div>
-        );
-      }
-    }
-    
-    export default App;
+export default App;
