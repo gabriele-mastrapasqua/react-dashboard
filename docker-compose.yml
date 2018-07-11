@@ -21,11 +21,11 @@ services:
     ports:
       # bind mongod port for external access, for example from robomongo
       - 27017:27017 
-    volumes:
+    #volumes:
       # map volume to persist mongo db
       #- './server/data/mongodb:/data/db'
       # map volume for backup data
-      - './server/data/backup:/backup'
+      #- './server/data/backup:/backup'
     #environment:
     #  MONGO_INITDB_ROOT_USERNAME: root
     #  MONGO_INITDB_ROOT_PASSWORD: example
