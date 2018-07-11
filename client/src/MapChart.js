@@ -10,7 +10,7 @@ const mapconfig = {
     spacingBottom: 20
   },
   title: {
-    text: 'Impressions per zones'
+    text: 'Impressions for each country'
   },
 
   legend: {
