@@ -17,7 +17,7 @@ services:
       
   mongo:
     image: mongo
-    restart: always
+    #restart: always
     ports:
       # bind mongod port for external access, for example from robomongo
       - 27017:27017 
@@ -32,7 +32,7 @@ services:
 
   mongo-express:
     image: mongo-express
-    restart: always
+    #restart: always
     ports:
       - 8081:8081
     #environment:
