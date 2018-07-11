@@ -73,8 +73,13 @@ class DeviceImpressionsTable extends React.Component {
               <ul className="pagination justify-content-end" >
                 <li className="page-item" className={'page-item ' + (this.state.page == 1 ? 'disabled' : '')}><a className="page-link" onClick={this.onPreviousClick} >Previous</a></li>
                 <li className="page-item"><a className="page-link" onClick={this.onNextClick}>Next</a></li>
+                <li className="page-item" style={{'margin-top': '8px', 'margin-left': '10px'}}>
+                  of: {this.props.totalImpressions}
+                </li>
               </ul>
+
             </nav>
+
           </tfoot>
         </table>
 
