@@ -76,10 +76,11 @@ class BarChart extends Component {
   render() {
     return (
       <div>
-        <div className="form-group">
-          <label >Date</label>
-          <input type="date" value={this.state.date} className="form-control" onChange={this.onChangeDate} />
+        <div className="form-group text-left">
+          <label for="date">Date</label>
+          <input type="date" id="date" value={this.state.date} className="form-control" onChange={this.onChangeDate} />
         </div>
+        
 
         <ReactHighcharts config={this.state.chartConfig} />
       </div>
