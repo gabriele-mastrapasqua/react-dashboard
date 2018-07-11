@@ -29,10 +29,9 @@ class DeviceImpressionsTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.state.impressionPerDevices
-            .map(n => {
+          {this.state.impressionPerDevices.map((n, index) => {
               return (
-                <tr>
+                <tr key={n._id} index={index}>
                   <td>{n._id}</td>
                   <td>{n.count}</td>
                 </tr>
