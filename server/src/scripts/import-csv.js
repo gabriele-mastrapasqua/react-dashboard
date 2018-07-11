@@ -29,6 +29,7 @@ function loadMobileData() {
                 type: "Point",
                 coordinates: [parseFloat(data["lng"]), parseFloat(data["lat"])]   // takes longitude, latitude coordinates
             };
+            data['timestamp'] = new Date(parseInt(data['timestamp']));
             //console.log("got data ", data);
             events.push(data);
             console.log("insert row ", count);

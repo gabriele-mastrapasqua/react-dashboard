@@ -48,28 +48,52 @@ app.get('/getImpressions', (req, res) => {
         });
 });
 
+
+// 
+function getDateDiff(date, type = "h") {
+    let impressions = [];
+    let data = null;
+    let diffUnit = "days";
+    let startDate = null;
+    let dateFormat = 'YYYY-MM-DD';
+    if (type === "h" ) {
+        data = Array(24).fill(0); // init array of 0 values
+        diffUnit = "hours";
+        startDate = moment.utc(date).subtract(1, "days");  // minus 24h from passed date
+        dateFormat = 'YYYY-MM-DD H:00';
+    } else if (type === "w" ) {
+        data = Array(7).fill(0);
+        diffUnit = "days";
+        startDate = moment.utc(date).subtract(7, "days");
+    } else if (type === "m" ) {
+        data = Array(31).fill(0);
+        diffUnit = "days";
+        startDate = moment.utc(date).subtract(1, "months");
+    }
+	
+	// date range in hours
+	let endDate = moment.utc(date);
+	const range = moment.range(startDate, endDate);						// to date
+	for (let d of range.by(diffUnit)) {
+		console.log("date item: ", d.format(dateFormat) );
+		impressions.push( d.format(dateFormat) );
+    }
+    return {impressions, data, startDate, endDate};
+}
+
+
 // get impressions in the last 24h from the passed date
 app.get('/getImpressions24Hours/:date', (req, res) => {
     console.log("get 24 hours date - 1 day ", req.params.date)
-    //var impressionsHours = Array(24).fill(0); // init array of 0 values
-	var impressionsHours = [];
+    let {impressions, data, startDate, endDate} = getDateDiff(req.params.date, "h");
+    console.log("get ", data, impressions, startDate, endDate);
 	
-	// date range in hours
-	const end = moment.utc(req.params.date);
-	const start = moment(req.params.date).subtract(1, "days");  // minus 24h from passed date
-	const range = moment.range(start, end);						// to date
-	console.log("range" , range);
-	for (let hour of range.by('hours')) {
-		console.log( "H: ", hour.format('YYYY-MM-DD H:00') );
-		impressionsHours.push( {date: hour.format('YYYY-MM-DD H:00'), total: 0} );
-	}
-
     // total impressions on db
     Event.aggregate([
         /* filter: where */
         {$match: {timestamp: {
-            $lt: new Date(req.params.date) , 
-            $gte: new Date(new Date(req.params.date).setDate(new Date(req.params.date).getDate()-1))
+            $lt: endDate.toDate() , 
+            $gte: startDate.toDate()
             }} 
         },
         /* join: raggruppa i campi separando in più componenti giorni,ore,min.
@@ -93,13 +117,110 @@ app.get('/getImpressions24Hours/:date', (req, res) => {
         {$sort: {_id: 1}}
     
     ], function (err, docs) {
+        console.log("impression res: ", docs, docs.length)
+   
         // fill hours array with 
         for(var i=0; i < docs.length; i++) {
             console.log("impression in date: ", docs[i]._id, docs[i].total)
             // if in the db there are impressions for this hour
-            impressionsHours[ docs[i]._id.hour ]["total"] = docs[i].total;
+            data[ docs[i]._id.hour ] = docs[i].total;
         }
-        res.send({ impressions: impressionsHours /*, docs: docs*/ });        
+        res.send({ categories: impressions , data: data });        
+    });
+
+});
+
+// get impressions in the last week from the passed date
+app.get('/getImpressionsWeek/:date', (req, res) => {
+    let {impressions, data, startDate, endDate} = getDateDiff(req.params.date, "w");
+    console.log("get ", data, impressions, startDate.toDate(), endDate.toDate());
+	
+    // total impressions on db
+    Event.aggregate([
+        /* filter: where */
+        {$match: {timestamp: {
+            $lt: endDate.toDate() , 
+            $gte: startDate.toDate()
+            }} 
+        },
+        /* join: raggruppa i campi separando in più componenti giorni,ore,min.
+        usa i per contare */
+        {$project:         
+               {
+              "y":{"$year":"$timestamp"},
+              "m":{"$month":"$timestamp"},
+              "d":{"$dayOfMonth":"$timestamp"},
+              "i": {"$sum": 1} }
+            },
+        /* raggruppa come id per anno+mese+giorno+ora e somma le occorrenze */
+        { "$group":
+            { 
+            "_id": { "year":"$y","month":"$m","day":"$d"},
+            "total":{ "$sum": "$i"}
+            }
+        },
+        /* ordina x ore */
+        {$sort: {_id: 1}}
+    
+    ], function (err, docs) {
+        console.log("impression res: ", docs, docs.length)
+   
+        // fill hours array with 
+        for(var i=0; i < docs.length; i++) {
+            console.log("impression in date: ", docs[i]._id, docs[i].total)
+            // if in the db there are impressions for this hour
+            data[ i ] = docs[i].total;
+        }
+        console.log();
+        res.send({ categories: impressions , data: data });        
+    });
+
+});
+
+
+// get impressions in the last week from the passed date
+app.get('/getImpressionsMonth/:date', (req, res) => {
+    let {impressions, data, startDate, endDate} = getDateDiff(req.params.date, "m");
+    console.log("get ", data, impressions, startDate.toDate(), endDate.toDate());
+	
+    // total impressions on db
+    Event.aggregate([
+        /* filter: where */
+        {$match: {timestamp: {
+            $lt: endDate.toDate() , 
+            $gte: startDate.toDate()
+            }} 
+        },
+        /* join: raggruppa i campi separando in più componenti giorni,ore,min.
+        usa i per contare */
+        {$project:         
+               {
+              "y":{"$year":"$timestamp"},
+              "m":{"$month":"$timestamp"},
+              "d":{"$dayOfMonth":"$timestamp"},
+              "i": {"$sum": 1} }
+            },
+        /* raggruppa come id per anno+mese+giorno+ora e somma le occorrenze */
+        { "$group":
+            { 
+            "_id": { "year":"$y","month":"$m","day":"$d"},
+            "total":{ "$sum": "$i"}
+            }
+        },
+        /* ordina x ore */
+        {$sort: {_id: 1}}
+    
+    ], function (err, docs) {
+        console.log("impression res: ", docs, docs.length)
+   
+        // fill hours array with 
+        for(var i=0; i < docs.length; i++) {
+            console.log("impression in date: ", docs[i]._id, docs[i].total)
+            // if in the db there are impressions for this hour
+            data[ i ] = docs[i].total;
+        }
+        console.log();
+        res.send({ categories: impressions , data: data });        
     });
 
 });

@@ -18,11 +18,6 @@ class App extends Component {
     this.state = {
       option: 0,
       totalImpressions: 0,
-      impressionPerDevices: [],
-      impression24Hours: [],
-      impressionDayOfWeek: [],
-      impressionDayOfMonth: [],
-      impressionEachCountry: [],
     };
   }
 
@@ -46,15 +41,15 @@ class App extends Component {
       );
     } else if (this.state.option === 1) {
       return (
-        <BarChart />
+        <BarChart type="h"/>
       );
     } else if (this.state.option === 2) {
       return (
-        <DevicesImpressionsTable />
+        <BarChart type="w"/>
       );
     } else if (this.state.option === 3) {
       return (
-        <DevicesImpressionsTable />
+        <BarChart type="m"/>
       );
     }
   }
