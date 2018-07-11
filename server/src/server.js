@@ -10,6 +10,11 @@ require('./config.js');
 const connStr = `mongodb://${MONGO_HOST}:${MONGO_PORT}/analytics`;
 mongoose.connect(connStr, { useNewUrlParser: true });
 
+// moment and moment plugin for date ranges
+const Moment = require('moment');
+const MomentRange = require('moment-range');
+const moment = MomentRange.extendMoment(Moment);
+
 
 // Constants
 const PORT = 8080;
@@ -46,7 +51,18 @@ app.get('/getImpressions', (req, res) => {
 // get impressions in the last 24h from the passed date
 app.get('/getImpressions24Hours/:date', (req, res) => {
     console.log("get 24 hours date - 1 day ", req.params.date)
-    var impressionsHours = Array(24).fill(0); // init array of 0 values
+    //var impressionsHours = Array(24).fill(0); // init array of 0 values
+	var impressionsHours = [];
+	
+	// date range in hours
+	const end = moment.utc(req.params.date);
+	const start = moment(req.params.date).subtract(1, "days");  // minus 24h from passed date
+	const range = moment.range(start, end);						// to date
+	console.log("range" , range);
+	for (let hour of range.by('hours')) {
+		console.log( "H: ", hour.format('YYYY-MM-DD H:00') );
+		impressionsHours.push( {date: hour.format('YYYY-MM-DD H:00'), total: 0} );
+	}
 
     // total impressions on db
     Event.aggregate([
@@ -78,12 +94,12 @@ app.get('/getImpressions24Hours/:date', (req, res) => {
     
     ], function (err, docs) {
         // fill hours array with 
-        for(var i=0; i<docs.length; i++) {
-            console.log("impression in h ", docs[i]._id.hour, docs[i].total)
+        for(var i=0; i < docs.length; i++) {
+            console.log("impression in date: ", docs[i]._id, docs[i].total)
             // if in the db there are impressions for this hour
-            impressionsHours[ docs[i]._id.hour ] = docs[i].total;
+            impressionsHours[ docs[i]._id.hour ]["total"] = docs[i].total;
         }
-        res.send({ impressions: impressionsHours, docs: docs });        
+        res.send({ impressions: impressionsHours /*, docs: docs*/ });        
     });
 
 });
