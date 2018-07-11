@@ -77,7 +77,7 @@ class BarChart extends Component {
     return (
       <div>
         <div className="form-group text-left">
-          <label for="date">Date</label>
+          <label for="date">From Date</label>
           <input type="date" id="date" value={this.state.date} className="form-control" onChange={this.onChangeDate} />
         </div>
         
