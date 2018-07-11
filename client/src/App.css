@@ -3,7 +3,7 @@
 .App {
   text-align: center;
   background: #373853;
-
+  min-height: 800px
 }
 
 .App-logo {

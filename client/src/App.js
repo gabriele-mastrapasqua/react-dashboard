@@ -61,13 +61,9 @@ class App extends Component {
         </a>
         </nav>
         <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <b>Total impressions:</b> {this.state.totalImpressions}
-            </div>
-          </div>
-
-          <div class="card">
+       
+        
+          <div class="card" style={{'margin-top': '20px'}}>
             <div class="card-body">
               <div className="row">
                 <div className="col-md-6 mb-3">
