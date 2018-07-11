@@ -34,11 +34,14 @@ app.get('/getTotalImpressions', (req, res) => {
 });
 
 // get impressions groupde by devices
-app.get('/getImpressions', (req, res) => {
+app.get('/getImpressions/:page', (req, res) => {
+    const limit = 10
     Event.aggregate(
         [
             { $group: { _id: "$device_id", count: { $sum: 1 } } },
-            { $limit: 10 }
+            { $skip: (parseInt(req.params.page) - 1) * limit },
+            { $limit: limit },
+
         ], function (err, result) {
             var impressionPerDevices = {};
             if (result && result.length > 0) {
@@ -49,7 +52,8 @@ app.get('/getImpressions', (req, res) => {
 });
 
 
-// 
+// get date diff ranges
+// type: hours, week, month
 function getDateDiff(date, type = "h") {
     let impressions = [];
     let data = null;
