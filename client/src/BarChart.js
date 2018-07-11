@@ -12,6 +12,7 @@ class BarChart extends Component {
     this.state = {
       date: "2018-05-01",
       chartConfig: {
+        title: {text: ""},
         xAxis: {
           categories: []
         },
@@ -54,6 +55,7 @@ class BarChart extends Component {
         let data = response.data.data;
         this.setState({
             chartConfig: {
+              title: {text: ""},
               xAxis: {
                 categories: categories
               },
