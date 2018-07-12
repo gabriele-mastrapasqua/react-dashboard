@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import axios from 'axios'
 import config from './config.js';
+import 'font-awesome/css/font-awesome.min.css'
+
 
 // ui components
 import DevicesImpressionsTable from './DevicesImpressionsTable';
@@ -57,8 +59,9 @@ class App extends Component {
       <div className="App">
         <nav className="navbar navbar-light bg-light">
           <a className="navbar-brand" href="#">
+            <i class="fa fa-pie-chart"></i>&#160;
             Analytics dashboard
-        </a>
+          </a>
         </nav>
         <div className="container">
        
@@ -68,10 +71,18 @@ class App extends Component {
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <div className="btn-group" role="group" aria-label="Impressions">
-                    <button type="button" onClick={this.changeOption.bind(this, 0)} className={'btn btn-secondary'+(this.state.option == 0 ? 'active': '') } >Total impressions</button>
-                    <button type="button" onClick={this.changeOption.bind(this, 1)} className={'btn btn-secondary'+(this.state.option == 1 ? 'active': '') }>Last 24 hours</button>
-                    <button type="button" onClick={this.changeOption.bind(this, 2)} className={'btn btn-secondary'+(this.state.option == 2 ? 'active': '') }>Last week</button>
-                    <button type="button" onClick={this.changeOption.bind(this, 3)} className={'btn btn-secondary'+(this.state.option == 3 ? 'active': '') }>Last Month</button>
+                    <button type="button" onClick={this.changeOption.bind(this, 0)} className={'btn btn-secondary'+(this.state.option == 0 ? 'active': '') } >
+                      <i class="fa fa-mobile"></i>&#160;
+                      Devices</button>
+                    <button type="button" onClick={this.changeOption.bind(this, 1)} className={'btn btn-secondary'+(this.state.option == 1 ? 'active': '') }>
+                      <i class="fa fa-clock-o"></i>&#160;
+                      Last 24 hours</button>
+                    <button type="button" onClick={this.changeOption.bind(this, 2)} className={'btn btn-secondary'+(this.state.option == 2 ? 'active': '') }>
+                      <i class="fa fa-calendar-o"></i>&#160;
+                      Last week</button>
+                    <button type="button" onClick={this.changeOption.bind(this, 3)} className={'btn btn-secondary'+(this.state.option == 3 ? 'active': '') }>
+                      <i class="fa fa-calendar"></i>&#160;
+                      Last Month</button>
                   </div>
                 </div>
               </div>
@@ -79,7 +90,7 @@ class App extends Component {
               <div className="row">
                 <div className="col-md-6">
                   <div class="card">
-                    <div class="card-body" style={{ height: '600px' }} >
+                    <div class="card-body" style={{ height: '650px' }} >
                       {this.renderSelectedOption()}
                     </div>
                   </div>
@@ -87,7 +98,7 @@ class App extends Component {
                 </div>
                 <div className="col-md-6">
                   <div class="card">
-                    <div class="card-body" style={{ height: '600px' }} >
+                    <div class="card-body" style={{ height: '650px' }} >
                       <MapChart data={this.state.impressionEachCountry} />
                     </div>
                   </div>

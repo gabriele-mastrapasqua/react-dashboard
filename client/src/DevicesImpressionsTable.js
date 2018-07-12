@@ -51,6 +51,10 @@ class DeviceImpressionsTable extends React.Component {
   render() {
     return (
       <div>
+        <h6>
+          <i class="fa fa-mobile"></i>&#160;
+          Impressions for each device</h6>
+
         <table className="table">
           <thead className="thead-light">
             <tr>
@@ -68,8 +72,8 @@ class DeviceImpressionsTable extends React.Component {
               );
             })}
           </tbody>
-          <tfoot>
-            <nav aria-label="Page navigation example" >
+          <tfoot style={{'border-top': '1px solid #eee', }}>
+            <nav aria-label="Page navigation example" style={{'margin-top': '10px'}}>
               <ul className="pagination justify-content-end" >
                 <li className="page-item" className={'page-item ' + (this.state.page == 1 ? 'disabled' : '')}><a className="page-link" onClick={this.onPreviousClick} >Previous</a></li>
                 <li className="page-item"><a className="page-link" onClick={this.onNextClick}>Next</a></li>

@@ -10,7 +10,7 @@ const mapconfig = {
     spacingBottom: 20
   },
   title: {
-    text: 'Impressions for each country'
+    text: ''
   },
 
   legend: {
@@ -77,7 +77,11 @@ class MapChart extends Component {
       
    render() {
      return (
-      <ReactHighmaps config={mapconfig} />
+      <div>
+          <i class="fa fa-globe"></i>&#160;Impressions for each country
+
+          <ReactHighmaps config={mapconfig} />
+      </div>
      );
    }
 }
