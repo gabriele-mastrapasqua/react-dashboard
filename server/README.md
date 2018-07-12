@@ -10,6 +10,7 @@ The local dockefile describe how to build the nodejs server
 yarn install
 ```
 
+
 ## develop
 
 ```
@@ -23,9 +24,6 @@ note: using mounted volume from container /backup on local host
 
 docker-compose exec mongo mongodump -d analytics --out /backup
 
-## import a dump to mongo
-
-docker-compose exec mongo mongorestore /backup
 
 
 ## import csv events data and load map data that describe the neighborhood of united states in mongodb
@@ -58,10 +56,3 @@ var neighborhood = db.maps.findOne( { geometry: { $geoIntersects: { $geometry: {
 db.events.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } } ).count()
 ```
 
-
-## TODO
-
-- add test with jest
-- add mongodump and mongoimport to speedup import when starting up docker
-- add docker for frontend
-- add jest for frontend

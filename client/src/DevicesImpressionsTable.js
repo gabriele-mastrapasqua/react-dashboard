@@ -9,6 +9,7 @@ class DeviceImpressionsTable extends React.Component {
     super(props);
     this.state = {
       page: 1,
+      perPage: 10,
       impressionPerDevices: []
     };
 
@@ -78,7 +79,7 @@ class DeviceImpressionsTable extends React.Component {
                 <li className="page-item" className={'page-item ' + (this.state.page == 1 ? 'disabled' : '')}><a className="page-link" onClick={this.onPreviousClick} >Previous</a></li>
                 <li className="page-item"><a className="page-link" onClick={this.onNextClick}>Next</a></li>
                 <li className="page-item" style={{'margin-top': '8px', 'margin-left': '10px'}}>
-                  of: {this.props.totalImpressions}
+                  Page {this.state.page} of {this.props.totalImpressions/this.state.perPage} pages
                 </li>
               </ul>
 
