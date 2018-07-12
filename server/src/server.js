@@ -5,6 +5,7 @@ const cors = require('cors')
 
 var mongoose = require("mongoose");
 var Event = require('./models/Event');
+var Map = require('./models/Map');
 require('./config.js');
 
 const connStr = `mongodb://${MONGO_HOST}:${MONGO_PORT}/analytics`;
@@ -15,6 +16,7 @@ const Moment = require('moment');
 const MomentRange = require('moment-range');
 const moment = MomentRange.extendMoment(Moment);
 
+const async = require("async");
 
 // Constants
 const PORT = 8080;
@@ -32,6 +34,35 @@ app.get('/getTotalImpressions', (req, res) => {
         res.send({ impressions: totalImpressions });
     });
 });
+
+// get count for each US State of the impressions:
+app.get('/getTotalImpressionsEachState', (req, res) => {
+    let states = [];
+  
+    Map.find({}, function(err, neighborhoods) {
+        console.log("got map find all")
+    
+        async.forEach(neighborhoods, function (neighborhood, callback){ 
+            console.log(neighborhood); // print the key
+        
+            Event.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } }, function(err, docs) {
+                // pass new state down the pipeline
+                console.log("pass events down pipeline...", docs.length)
+                states.push({
+                    count: docs.length,
+                    state: neighborhood.properties.level1
+                });
+
+                // tell async that that particular element of the iterator is done
+                callback(); 
+            });                
+        }, function(err) {
+            console.log('iterating done');
+            res.json(states);       
+        }); 
+    });
+});
+    
 
 // get impressions groupde by devices
 app.get('/getImpressions/:page', (req, res) => {
