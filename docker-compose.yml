@@ -3,17 +3,19 @@ version: '3.1'
 
 services:
   # TODO: docker image of the single page application in react
-  #web:
-    #build: client/.
-    #ports:
-      #- 3000:3000
-  
-  #api:
-  #  build: server/.
-  #  ports:
-  #    - 8080:8080
-  #  depends_on:
-  #    - mongo
+  client:
+    build: client/.
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+
+  api:
+    build: server/.
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo
       
   mongo:
     image: mongo:4.0
