@@ -61,7 +61,12 @@ docker-compose down
 
 # Development
 
-For development purpose start a mongodb docker container, Then under "client/" folder run:
+For development purpose start a mongodb docker container:
+```
+docker run --rm --name mongo mongo:4.0 
+```
+
+Then under "client/" folder run:
 ```
 yarn start
 ```
