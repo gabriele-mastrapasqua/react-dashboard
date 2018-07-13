@@ -61,7 +61,7 @@ docker-compose down
 
 # Development
 
-For development purpose i started only a mongodb docker container then under "client/" folder run:
+For development purpose start a mongodb docker container, Then under "client/" folder run:
 ```
 yarn start
 ```
