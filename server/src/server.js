@@ -43,16 +43,16 @@ app.get('/getTotalImpressionsEachState', (req, res) => {
         console.log("got map find all")
     
         async.forEach(neighborhoods, function (neighborhood, callback){ 
-            console.log(neighborhood); // print the key
-        
+            // for each neighborhood find all events in that state
             Event.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } }, function(err, docs) {
                 // pass new state down the pipeline
                 console.log("pass events down pipeline...", docs.length)
                 states.push({
-                    count: docs.length,
-                    state: neighborhood.properties.level1
+                    name: neighborhood.properties.level1,
+                    data: [
+                        {count: docs.length, code: neighborhood.properties.level1}
+                    ]
                 });
-
                 // tell async that that particular element of the iterator is done
                 callback(); 
             });                

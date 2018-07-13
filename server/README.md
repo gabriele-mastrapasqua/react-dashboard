@@ -33,15 +33,11 @@ yarn run import-csv
 yarn run import-map
 ```
 
-This will load on mongodb and create a geospatial index to speedup queries.
 
-```
-db.events.createIndex({ location: "2dsphere" })
-db.maps.createIndex({ geometry: "2dsphere" })
-``` 
+var neighborhood = db.getCollection("maps").findOne();
+db.getCollection("events").find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } } ).count()
 
-geospatial queries examples:
-see https://docs.mongodb.com/manual/tutorial/geospatial-tutorial/
+
 
 
 - for example to find where a specific coordinates is in a state:
