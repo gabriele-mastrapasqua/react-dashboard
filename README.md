@@ -58,6 +58,7 @@ For more details about the import of the data please read server/README.md and u
 ```
 docker-compose down
 ```
+---
 
 # Development
 
