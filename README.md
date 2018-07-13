@@ -8,31 +8,33 @@ A Single page application and a REST API server that shows the advertisement vie
 * How many impressions for each day of the month?
 * How many impressions for each country? (no geocoding needed, the provided map should be useful and a map visualization would be great here)
 
+It's possibile to run the application using docker and docker-compose.
+For running without docker please read the client/README.md and server/README.md for the steps to install the dependencies.
 
-## build the images for running client and rest server
+
+## 1 - build the docker images for the application
 
 ```
 sudo docker-compose build
 ```
 
-## run
+## run the containers
 
+To spin up the application run:
 ```
-docker-compose up -d
+sudo docker-compose up -d
 ```
-
-
-The client will listen on port 3000
-(The webapi server will listen on port 8080)
+- The client will listen on port 3000
+- The webapi server will listen on port 8080
+- A mongodb will listen on port 27017
 
 
 ## import a dump to mongo container running
 
-To load the data in the database run this command after all the service are initialized:
+**It's mandatory to load the data in the database before using for the application.** Run this command after all the service are initialized:
 ```
 sudo docker-compose exec mongo mongorestore /backup
 ```
-
 
 ## stop containers
 

@@ -29,11 +29,3 @@ services:
       # map volume for backup data
       - './mongo/data/backup:/backup'
 
-  #mongo-express:
-    #image: mongo-express
-    #restart: always
-    #ports:
-      #- 8081:8081
-    #depends_on:
-      #- mongo
-    
