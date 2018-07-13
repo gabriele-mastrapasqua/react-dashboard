@@ -59,3 +59,17 @@ For more details about the import of the data please read server/README.md and u
 docker-compose down
 ```
 
+# Development
+
+For development purpose i started only a mongodb docker container then under "client/" folder run:
+```
+yarn start
+```
+
+in another shell under "server/" folder run:
+```
+yarn run dev
+```
+
+Those commands starts respectively create-react-app's server with hot reloading and nodemon for reloading changes in nodejs server.
+For more details about development please read the REAMDE.md under "client/" and "server/" folders.
