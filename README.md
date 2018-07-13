@@ -61,17 +61,24 @@ docker-compose down
 
 # Development
 
-For development purpose start a mongodb docker container:
+For development:
+
+- start a mongodb docker container:
 ```
 docker run --rm --name mongo mongo:4.0 
 ```
 
-Then under "client/" folder run:
+- import the data from the dump:
+```
+sudo docker-compose exec mongo mongorestore /backup
+```
+
+- client: under "client/" folder run:
 ```
 yarn start
 ```
 
-in another shell under "server/" folder run:
+- server: in another shell under "server/" folder run:
 ```
 yarn run dev
 ```
