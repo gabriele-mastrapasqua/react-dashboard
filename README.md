@@ -18,7 +18,7 @@ For running without docker please read the client/README.md and server/README.md
 sudo docker-compose build
 ```
 
-## run the containers
+## 2 - run the application
 
 To spin up the application run:
 ```
@@ -29,14 +29,18 @@ sudo docker-compose up -d
 - A mongodb will listen on port 27017
 
 
-## import a dump to mongo container running
+## 3 - import a dump to mongo container running
 
 **It's mandatory to load the data in the database before using for the application.** Run this command after all the service are initialized:
 ```
 sudo docker-compose exec mongo mongorestore /backup
 ```
 
-## stop containers
+A dump with data pre-processed and loaded in mongo is ready in the repository.
+For more details about the import of the data please read server/README.md and under server/src/scripts folder.
+
+
+## stop the application
 
 ```
 docker-compose down
