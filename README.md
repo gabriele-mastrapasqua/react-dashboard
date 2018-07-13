@@ -8,9 +8,22 @@ A Single page application and a REST API server that shows the advertisement vie
 * How many impressions for each day of the month?
 * How many impressions for each country? (no geocoding needed, the provided map should be useful and a map visualization would be great here)
 
+## Description
+
+The application is build with:
+- React.js and highcharts.js on the frontend
+- Node.js server with mongodb on the backend
+
+Mongo was selected because is easy to use and have strong geolocation features built in.
+Also is really easy to do analytics queries using the aggregation framework.
+
+The data was pre-processed and stored in mongodb. To run correctly the application is mandatory to load the dump following the instruction below.
+
+
+# Installation
+
 It's possibile to run the application using docker and docker-compose.
 For running without docker please read the client/README.md and server/README.md for the steps to install the dependencies.
-
 
 ## 1 - build the docker images for the application
 

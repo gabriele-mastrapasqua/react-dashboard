@@ -33,22 +33,18 @@ yarn run import-csv
 yarn run import-map
 ```
 
+## query mongo on geolocation data
 
+- how to find all events within a state neighborhood:
+
+```
 var neighborhood = db.getCollection("maps").findOne();
 db.getCollection("events").find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } } ).count()
-
-
-
-
-- for example to find where a specific coordinates is in a state:
 ```
-db.maps.findOne({ geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.93414657, 40.82302903 ] } } } })
+
+- how to check whether a specific coordinates is in a state:
+```
+db.getCollection("maps").findOne({ geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.93414657, 40.82302903 ] } } } })
 ```
 will prints the NY zone Neighborhood.
-
-- to find all mobile devices in a specific zone:
-```
-var neighborhood = db.maps.findOne( { geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.93414657, 40.82302903 ] } } } } )
-db.events.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } } ).count()
-```
 
