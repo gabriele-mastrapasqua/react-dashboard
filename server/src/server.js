@@ -46,7 +46,7 @@ app.get('/getTotalImpressionsEachState', (req, res) => {
             // for each neighborhood find all events in that state
             Event.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } }, function(err, docs) {
                 // pass new state down the pipeline
-                console.log("pass events down pipeline...", docs.length)
+                //console.log("pass events down pipeline...", docs.length)
                 states.push({
                     name: neighborhood.properties.level1,
                     data: [
