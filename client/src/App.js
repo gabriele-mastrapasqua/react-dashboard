@@ -16,7 +16,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      option: 0,
+      option: 1,
       totalImpressions: 0,
     };
   }
@@ -35,11 +35,7 @@ class App extends Component {
   }
 
   renderSelectedOption() {
-    if (this.state.option === 0) {
-      return (
-        <DevicesImpressionsTable totalImpressions={this.state.totalImpressions} />
-      );
-    } else if (this.state.option === 1) {
+    if (this.state.option === 1) {
       return (
         <BarChart type="h" />
       );
@@ -67,13 +63,10 @@ class App extends Component {
        
         
           <div class="card" style={{'margin-top': '20px'}}>
-            <div class="card-body">
+            <div class="card-body" style={{'background': '#eee'}}>
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <div className="btn-group" role="group" aria-label="Impressions">
-                    <button type="button" onClick={this.changeOption.bind(this, 0)} className={'btn btn-secondary'+(this.state.option == 0 ? 'active': '') } >
-                      <i class="fa fa-mobile"></i>&#160;
-                      Devices</button>
                     <button type="button" onClick={this.changeOption.bind(this, 1)} className={'btn btn-secondary'+(this.state.option == 1 ? 'active': '') }>
                       <i class="fa fa-clock-o"></i>&#160;
                       Last 24 hours</button>
@@ -88,18 +81,26 @@ class App extends Component {
               </div>
 
               <div className="row">
+               
                 <div className="col-md-6">
                   <div class="card">
-                    <div class="card-body" style={{ height: '650px' }} >
+                    <div class="card-body" style={{ height: '550px' }} >
                       {this.renderSelectedOption()}
                     </div>
                   </div>
-
                 </div>
                 <div className="col-md-6">
                   <div class="card">
-                    <div class="card-body" style={{ height: '650px' }} >
-                      <MapChart data={this.state.impressionEachCountry} />
+                    <div class="card-body" style={{ height: '550px' }} >
+                    <DevicesImpressionsTable totalImpressions={this.state.totalImpressions} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-12" style={{'margin-top':'20px'}}>
+                  <div class="card">
+                    <div class="card-body" style={{ height: '450px' }} >
+                      <MapChart />
                     </div>
                   </div>
                 </div>

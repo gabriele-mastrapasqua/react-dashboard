@@ -66,7 +66,7 @@ app.get('/getTotalImpressionsEachState', (req, res) => {
 
 // get impressions groupde by devices
 app.get('/getImpressions/:page', (req, res) => {
-    const limit = 10
+    const limit = 8
     Event.aggregate(
         [
             { $group: { _id: "$device_id", count: { $sum: 1 } } },

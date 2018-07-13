@@ -28,3 +28,12 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.navbar {
+  background: #a0dcec !important;
+
+}
+.navbar-brand {
+  color: #6c757d !important;
+
+}

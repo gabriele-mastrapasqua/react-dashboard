@@ -9,7 +9,7 @@ class DeviceImpressionsTable extends React.Component {
     super(props);
     this.state = {
       page: 1,
-      perPage: 10,
+      perPage: 8,
       impressionPerDevices: []
     };
 
