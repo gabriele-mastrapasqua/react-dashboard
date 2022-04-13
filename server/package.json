@@ -11,7 +11,7 @@
     "import-map": "node src/scripts/import-map.js && exit"
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "cors": "^2.8.4",
     "express": "^4.16.1",
     "fast-csv": "^2.4.1",
